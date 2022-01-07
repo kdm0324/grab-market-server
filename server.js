@@ -19,6 +19,22 @@ app.use(express.json());
 app.use(cors()); //모든 브라우저에서 내 서버에 요청할 수 있음.
 app.use("/uploads", express.static("uploads"));
 
+//배너를 보내주는 api
+app.get("/banners", (req, res) => {
+  models.Banner.findAll({
+    limit: 2,
+  })
+    .then((result) => {
+      res.send({
+        banners: result,
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send("에러가 발생했습니다.");
+    });
+});
+
 //전체 조회 API 구현
 app.get("/products", (req, res) => {
   models.Product.findAll({
